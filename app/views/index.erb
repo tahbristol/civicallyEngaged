@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h1>Civically Engaged</h1>
+
+    <div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+      <div class="cover-container">
+
+        <header class="masthead clearfix">
+          <div class="inner">
+            <h3 class="masthead-brand">CE</h3>
+            <nav class="nav nav-masthead">
+              <a class="nav-link active" href="#">Home</a>
+              <a class="nav-link" href="#">Elections</a>
+              <a class="nav-link" href="#">Representatives</a>
+            </nav>
+          </div>
+        </header>
+
+        <main class="main jumbotron">
+
+        </main>
+
+
+        <footer class="mastfoot">
+          <div class="inner">
+            <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+          </div>
+        </footer>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+  <script id="civic" type="text/x-handlebars-template">
+    {{#each this}}
+    <div id="body">
+      <h1>Title: {{name}}</h1>
+      <p>Part: {{party}}</p>
+      <p>Urls: {{urls}}</p>
+      <p>Phones: {{phones}}</p>
+    </div>
+    {{/each}}
+  </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="/javascript/main.js"></script>
+  </body>
+</html>

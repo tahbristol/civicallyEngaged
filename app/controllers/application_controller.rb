@@ -9,7 +9,18 @@ class ApplicationController < Sinatra::Base
   end
 
  get '/'do
+ #binding.pry
   erb :index
  end
+
+ post '/officials' do
+  # binding.pry
+   @official = Official.new(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], photoUrl: params[:photoUrl])
+
+  content_type :json
+  @official.to_json
+
+ end
+
 
 end

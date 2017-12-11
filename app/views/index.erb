@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
+    <link rel="stylesheet" href="stylesheets/style.css">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -25,7 +25,7 @@
 
         <header class="masthead clearfix">
           <div class="inner">
-            <h3 class="masthead-brand">CE</h3>
+            <h3 class="masthead-brand"></h3>
             <nav class="nav nav-masthead">
               <a class="nav-link active" href="#">Home</a>
               <a class="nav-link" href="#">Elections</a>
@@ -33,6 +33,7 @@
             </nav>
           </div>
         </header>
+        <div class="clearfix"></div>
 
         <main class="main jumbotron">
 
@@ -53,14 +54,25 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
   <script id="civic" type="text/x-handlebars-template">
-    {{#each this}}
-    <div id="body">
-      <h1>Title: {{name}}</h1>
-      <p>Part: {{party}}</p>
-      <p>Urls: {{urls}}</p>
-      <p>Phones: {{phones}}</p>
+
+    <div id="body" class="container">
+      <div class="row">
+      <div class="col-sm-6">
+        
+      <h3> {{name}}</h3>
+      <h5> {{position}}</h5>
+
     </div>
-    {{/each}}
+    <div class="col-sm-6">
+      <p>Party: {{party}}</p>
+      <a href={{url}} target="_blank">Website</a>
+      <p>Phones: {{phone}}</p>
+    </div>
+
+  </div>
+    </div>
+    <hr>
+
   </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

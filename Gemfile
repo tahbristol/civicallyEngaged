@@ -13,7 +13,8 @@ gem 'require_all'
 gem 'rack-flash3', :require => 'rack-flash'
 gem 'dotenv', groups: [:development, :test]
 gem 'thin'
-
+gem 'shotgun'
+gem 'tux'
 
 group :production do
 gem 'pg'

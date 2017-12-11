@@ -9,71 +9,90 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="stylesheets/style.css">
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
   </head>
   <body>
     <h1>Civically Engaged</h1>
 
     <div class="site-wrapper">
 
-    <div class="site-wrapper-inner">
+      <div class="site-wrapper-inner">
 
-      <div class="cover-container">
+        <div class="cover-container">
 
-        <header class="masthead clearfix">
-          <div class="inner">
-            <h3 class="masthead-brand"></h3>
-            <nav class="nav nav-masthead">
-              <a class="nav-link active" href="#">Home</a>
-              <a class="nav-link" href="#">Elections</a>
-              <a class="nav-link" href="#">Representatives</a>
-            </nav>
-          </div>
-        </header>
-        <div class="clearfix"></div>
+          <header class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"></h3>
+              <nav class="nav nav-masthead">
+                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link" href="#">Elections</a>
+                <a class="nav-link" href="#">Representatives</a>
+              </nav>
+            </div>
+          </header>
+          <div class="clearfix"></div>
 
-        <main class="main jumbotron">
+          <main class="jumbotron">
 
-        </main>
+            <form class="main" action='/officials/send' method="post">
+              <label for="toPhoneNumber">Phone:
+            <input id="toPhoneNumber" name="toNumber"></input>
+          </label>
+            <input id="submitBtn" type="submit"></input>
+            </form>
 
+          </main>
 
-        <footer class="mastfoot">
-          <div class="inner">
-            <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-          </div>
-        </footer>
+          <footer class="mastfoot">
+            <div class="inner">
+              <p>Cover template for
+                <a href="https://getbootstrap.com/">Bootstrap</a>, by
+                <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
+          </footer>
+
+        </div>
 
       </div>
 
     </div>
 
-  </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+    <script id="civic" type="text/x-handlebars-template">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
-  <script id="civic" type="text/x-handlebars-template">
+      <div id="body" class="container">
+        <div class="row">
 
-    <div id="body" class="container">
-      <div class="row">
-      <div class="col-sm-6">
-        
-      <h3> {{name}}</h3>
-      <h5> {{position}}</h5>
+          <div class="col-sm-5">
 
-    </div>
-    <div class="col-sm-6">
-      <p>Party: {{party}}</p>
-      <a href={{url}} target="_blank">Website</a>
-      <p>Phones: {{phone}}</p>
-    </div>
+            <h3>
+              {{name}}</h3>
+            <h5>
+              {{position}}</h5>
 
-  </div>
-    </div>
-    <hr>
+          </div>
+          <div class="col-sm-6">
+            <p>Party:
+              {{party}}</p>
+            <a href={{url}} target="_blank">Website</a>
+            <p>Phones:
+              {{phone}}</p>
+          </div>
+          <div class="col-sm-1">
 
-  </script>
+              <label for="sendOfficial">Send
+              <input id="sendOfficial" name="officials[to_send][]" value={{this.id}} type="checkbox"/>
+            </label>
+
+
+          </div>
+
+        </div>
+      </div>
+
+      <hr>
+
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

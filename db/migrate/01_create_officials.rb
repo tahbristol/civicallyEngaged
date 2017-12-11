@@ -9,5 +9,4 @@ class CreateOfficials < ActiveRecord::Migration[5.1]
       t.string :photoUrl
     end
   end
-
 end

@@ -16,10 +16,10 @@ gem 'sinatra-flash'
 gem 'thin'
 gem 'shotgun'
 gem 'tux'
-
+gem 'pony'
 group :production do
   gem 'pg'
-  gem 'pony'
+  
 end
 
 group :development do

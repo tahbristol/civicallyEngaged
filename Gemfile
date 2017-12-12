@@ -9,7 +9,7 @@ gem 'sinatra-activerecord', require: 'sinatra/activerecord'
 gem 'bcrypt'
 gem 'sinatra-contrib', require: 'sinatra/reloader'
 gem 'require_all'
-gem 'twilio-ruby'
+
 gem 'rack-flash3', require: 'rack-flash'
 gem 'sinatra-flash'
 gem 'dotenv', groups: %i[development test]

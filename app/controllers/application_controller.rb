@@ -10,9 +10,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-    # binding.pry
-      @officials = Official.all
-
+    @officials = Official.all
     erb :index
   end
 
@@ -21,40 +19,36 @@ class ApplicationController < Sinatra::Base
     @official.save
     content_type :json
     @official.to_json
-
   end
 
   post '/officials/send' do
-    binding.pry
-    to = params[:toNumber].split(' ')
+    numbers = params[:toNumber].split('-')
     officials = params[:officials][:to_send]
 
-    binding.pry
     client = Twilio::REST::Client.new(
       account_sid = ENV['TWILIO_ACCOUNT_SID'],
       auth_token = ENV['TWILIO_AUTH_TOKEN']
     )
 
-    to.each do |number|
+    numbers.each do |number|
       officials.each do |official|
         @official = Official.find(official)
-          binding.pry
+
         client.messages.create(
           to: number,
           from: ENV['TWILIO_NUMBER_ONE'],
           body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}"
         )
       end
-      #flash[:text_sent] = 'Officials have been sent to your phone.'
+      # flash[:text_sent] = 'Officials have been sent to your phone.'
     end
     redirect to '/'
   end
 
-    post '/officials/delete' do
-        Official.destroy_all
-        @official = [];
-        content_type :json
-        "none".to_json
-
-    end
+  post '/officials/delete' do
+    Official.destroy_all
+    @official = []
+    content_type :json
+    'none'.to_json
+  end
 end

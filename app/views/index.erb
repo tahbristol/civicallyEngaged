@@ -12,7 +12,7 @@
     <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
   </head>
   <body>
-    <h1>Civically Engaged</h1>
+    <h1 id="site">Civically Engaged</h1>
 
     <div class="site-wrapper">
 
@@ -33,47 +33,29 @@
           <div class="clearfix"></div>
 
           <main class=" jumbotron">
-              <h4>Get your officials, just enter your address.</h4>
+            <h4>Ready to get involved?</h4>
 
-            <div id="addressForm">
-              <form id="address" method="post">
-                <label for="address">
-                  Address: <input id="address" name="address"/>
-                </label>
-                <input type="submit"/>
-              </form>
+            <form id="address" method="post">
+              <div id="addressInput" class="form-group">
+                <label for="address">Address</label>
+                <input class="form-control" id="addressToSearch" name="address" placeholder="Address..."/>
+                <small class="form-text text-muted">Enter an address to find your representatives.</small>
+              </div>
+              <button class="btn btn-primary" type="submit">Search</button>
+            </form>
 
-
-
-            </div>
-
-
-
-
-            <div id="phoneForm">
-              <form id="phone" action='/officials/send' method="post">
-                <div class="officials">
-                </div>
-                <div id="phoneInput">
-                  <label for="toPhoneNumber">Phone:
-                    <input id="toPhoneNumber" name="toNumber"></input>
-                  </label>
-                  <input id="submitBtn" type="submit"></input>
-                </div>
- </form>
-            </div>
-
-
+            <form id="phone" action='/officials/send' method="post">
+              <div class="officials"></div>
+              <div id="phoneInput" class="form-group">
+                <label for="toPhoneNumber">Phone number</label>
+                <input class="form-control" id="toPhoneNumber" name="toNumber" placeholder="Mobile number..."/>
+                <small class="form-text text-muted">Place a check to send to your phone.</small>
+              </div>
+              <button class="btn btn-primary" type="submit">Send</button>
+            </form>
 
           </main>
 
-          <footer class="mastfoot">
-            <div class="inner">
-              <p>Cover template for
-                <a href="https://getbootstrap.com/">Bootstrap</a>, by
-                <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
-          </footer>
 
         </div>
 
@@ -98,15 +80,14 @@
           <div class="col-sm-4">
             <p>Party:
               {{party}}</p>
-            <a href={{url}} target="_blank">Website</a>
+            <a href={{url} }="}" target="_blank">Website</a>
             <p>Phones:
               {{phone}}</p>
           </div>
           <div class="col-sm-4">
 
-
-              <input id="sendOfficial" name="officials[to_send][]" value={{id}} type="checkbox"/>
-              <p>Text this info?</p>
+            <input id="sendOfficial" name="officials[to_send][]" value={{id} }="}" type="checkbox"/>
+            <p>Text this info?</p>
 
           </div>
 

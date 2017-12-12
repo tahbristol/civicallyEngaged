@@ -7,11 +7,21 @@ header {
   font-size: 20px;
 }
 
+main {
+    text-align: center
+}
+main h4{
+    margin: 10px 0;
+}
+
 img {
   width: 100px;
   height: 100px;
 }
+#phoneForm, #addressForm{
+    text-align: center;
+}
 
-#submitBtn, #toPhoneNumber {
-
+footer .inner {
+    display: none;
 }

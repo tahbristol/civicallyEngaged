@@ -1,9 +1,20 @@
+'use-strict';
 
-'use-strict'
-const API_KEY = "AIzaSyD5JWZW3JJSHUYyE8wKCLUOnesa5Udd1AI";
-console.log(API_KEY);
-let url = `https://www.googleapis.com/civicinfo/v2/representatives?address=1621 valencia way reston va&key=${API_KEY}`
-//  let url =  'https://jsonplaceholder.typicode.com/posts/1';
+
+let addressForm = document.getElementById('address');
+addressForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    let address = this["address"].value;
+    getOfficials(address);
+})
+
+function getOfficials(address){
+    clearAddress();
+    const API_KEY = "AIzaSyD5JWZW3JJSHUYyE8wKCLUOnesa5Udd1AI";
+
+let url = `https://www.googleapis.com/civicinfo/v2/representatives?address=${address}&key=${API_KEY}`
+
+$.post('/officials/delete', [],function(){
 
 fetch(url)
   .then(res => res.json())
@@ -32,48 +43,22 @@ fetch(url)
         var civicTemplate = document.getElementById('civic').innerHTML;
         var template = Handlebars.compile(civicTemplate);
         var html = template(data);
-        document.getElementsByClassName('main')[0].innerHTML += html;
+        document.getElementsByClassName('officials')[0].innerHTML += html;
       });
 
     });
 
   });
 
+});
 
 
+}
 
-//let postOfficials = $.post('/officials', values);
+function clearAddress(){
 
-/*postOfficials.done(function(data){
-      console.log(data);
+    let cleared = $.post('/officials/delete');
+    cleared.done(function(data){
+        document.getElementsByClassName('officials')[0].innerHTML = "";
     })
-    var civicTemplate = document.getElementById('civic').innerHTML;
-    var template = Handlebars.compile(civicTemplate);
-    var html = template(data.officials);
-    document.getElementsByClassName('main')[0].innerHTML += html;
-
-
-  });*/
-
-/*$.getJSON(url, function(data){
-    var civicTemplate = document.getElementById('civic').innerHTML;
-    var template = Handlebars.compile(civicTemplate);
-    let values = data.officials.map( function(data) {
-      let officialsObjs = []
-      let officialObj = `{"name": "${data.name}", "party": "${data.party}"}`
-      //  return JSON.parse(officialObj);
-        let officials = $.post('/officials', JSON.parse(officialObj));
-
-         officials.done(function(data){
-            console.log(data);
-           //var html = template(data.name);
-
-          // document.getElementsByClassName('main')[0].innerHTML += html;
-        });
-
-
-
-    });
-  //  console.log(values);
-
-})*/
+}

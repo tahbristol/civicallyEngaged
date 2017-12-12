@@ -32,14 +32,38 @@
           </header>
           <div class="clearfix"></div>
 
-          <main class="jumbotron">
+          <main class=" jumbotron">
+              <h4>Get your officials, just enter your address.</h4>
 
-            <form class="main" action='/officials/send' method="post">
-              <label for="toPhoneNumber">Phone:
-            <input id="toPhoneNumber" name="toNumber"></input>
-          </label>
-            <input id="submitBtn" type="submit"></input>
-            </form>
+            <div id="addressForm">
+              <form id="address" method="post">
+                <label for="address">
+                  Address: <input id="address" name="address"/>
+                </label>
+                <input type="submit"/>
+              </form>
+
+
+
+            </div>
+
+
+
+
+            <div id="phoneForm">
+              <form id="phone" action='/officials/send' method="post">
+                <div class="officials">
+                </div>
+                <div id="phoneInput">
+                  <label for="toPhoneNumber">Phone:
+                    <input id="toPhoneNumber" name="toNumber"></input>
+                  </label>
+                  <input id="submitBtn" type="submit"></input>
+                </div>
+ </form>
+            </div>
+
+
 
           </main>
 
@@ -63,7 +87,7 @@
       <div id="body" class="container">
         <div class="row">
 
-          <div class="col-sm-5">
+          <div class="col-sm-4">
 
             <h3>
               {{name}}</h3>
@@ -71,19 +95,18 @@
               {{position}}</h5>
 
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <p>Party:
               {{party}}</p>
             <a href={{url}} target="_blank">Website</a>
             <p>Phones:
               {{phone}}</p>
           </div>
-          <div class="col-sm-1">
+          <div class="col-sm-4">
 
-              <label for="sendOfficial">Send
-              <input id="sendOfficial" name="officials[to_send][]" value={{this.id}} type="checkbox"/>
-            </label>
 
+              <input id="sendOfficial" name="officials[to_send][]" value={{id}} type="checkbox"/>
+              <p>Text this info?</p>
 
           </div>
 

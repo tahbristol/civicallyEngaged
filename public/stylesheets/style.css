@@ -35,9 +35,7 @@ input {
   width: 300px;
 }
 
-#addressToSearch {
-  width: 500px;
-}
+
 
 img {
   width: 100px;
@@ -48,4 +46,10 @@ img {
 
 footer .inner {
   display: none;
+}
+
+@media only screen and (min-width:550px){
+    #addressToSearch {
+  width: 500px;
+}
 }

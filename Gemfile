@@ -12,7 +12,7 @@ gem 'require_all'
 
 gem 'rack-flash3', require: 'rack-flash'
 gem 'sinatra-flash'
-gem 'dotenv', groups: %i[development test]
+
 gem 'thin'
 gem 'shotgun'
 gem 'tux'
@@ -23,6 +23,7 @@ group :production do
 end
 
 group :development do
+  gem 'dotenv'
   gem 'pry'
   gem 'sqlite3'
 end

@@ -24,12 +24,15 @@ class ApplicationController < Sinatra::Base
   post '/officials/send' do
     numbers = params[:toNumber].split('-')
     officials = params[:officials][:to_send]
+    
+      
 
     client = Twilio::REST::Client.new(
       account_sid = ENV['TWILIO_ACCOUNT_SID'],
       auth_token = ENV['TWILIO_AUTH_TOKEN']
     )
-
+      valid_number?(numbers[0])
+=begin 
     numbers.each do |number|
       officials.each do |official|
         @official = Official.find(official)
@@ -42,6 +45,7 @@ class ApplicationController < Sinatra::Base
       end
       # flash[:text_sent] = 'Officials have been sent to your phone.'
     end
+=end
     redirect to '/'
   end
 
@@ -51,4 +55,29 @@ class ApplicationController < Sinatra::Base
     content_type :json
     'none'.to_json
   end
+    
+    
+    helpers do 
+        def valid_number?(number)
+            client = Twilio::REST::Client.new(
+      account_sid = ENV['TWILIO_ACCOUNT_SID'],
+      auth_token = ENV['TWILIO_AUTH_TOKEN']
+    )
+            number = client.lookups.v1.phone_numbers(number)
+            binding.pry 
+            begin
+                lookup_response = lookup_client.phone_numbers.get(number)
+                lookup_response.phone_number
+                return true 
+            rescue => e
+                if e.code === 20404
+                    return false
+                else 
+                    raise e
+                end 
+            end 
+      
+        end 
+        
+    end 
 end

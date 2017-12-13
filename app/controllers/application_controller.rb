@@ -17,7 +17,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/officials' do
-    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], photoUrl: params[:photoUrl])
+   @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email])
     @official.save
     content_type :json
     @official.to_json
@@ -42,7 +42,7 @@ class ApplicationController < Sinatra::Base
           client.messages.create(
             to: number,
             from: ENV['TWILIO_NUMBER_ONE'],
-            body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}"
+            body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}, #{@official.email}"
           )
         end
         session[:message] = 'Text message sent!'

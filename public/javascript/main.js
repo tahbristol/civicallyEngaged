@@ -41,16 +41,21 @@ function clearThenRequestOfficials(url) {
 }
 
 function makeOfficalsJSON(officials, offices) {
-  let index = 0;
   let values = [];
-  officials.forEach(function(data) {
-    let officialObj = `{"name": "${data.name}", "party": "${data.party}", "phone": "${data.phones}", "url": "${data.urls}", "position": "${offices[index].name}"}`
-    if (index < offices.length - 1) {
-      index = index + 1;
-    }
-    values.push(JSON.parse(officialObj));
+    offices.forEach(function(office){
+  office["officialIndices"].forEach(function(index){
+      var email;
+      if (!officials[index]["emails"]){
+        email = "Unknown";
+      }else{
+          email = officials[index]["emails"];
+      }
+      let officialObj = `{"name": "${officials[index]["name"]}", "party": "${officials[index]["party"]}", "phone": "${officials[index]["phones"]}", "email": "${email}", "url": "${officials[index]["urls"]}", "position": "${office["name"]}"}`;
+      values.push(JSON.parse(officialObj));
   });
-  return values;
+  
+});
+    return values;
 }
 
 function makePostRequest(officials) {

@@ -36,7 +36,7 @@ class ApplicationController < Sinatra::Base
        auth_token = ENV['TWILIO_AUTH_TOKEN']
     )
     to_numbers.each do |number|
-      if valid_number?(number.gsub("-"," "))
+      if valid_number?(number.gsub("-",""))
         officials.each do |official|
           @official = Official.find(official)
           client.messages.create(

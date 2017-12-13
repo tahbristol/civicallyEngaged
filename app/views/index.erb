@@ -5,10 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-      <link rel="shortcut icon" href="#">
+    <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
   </head>
   <body>
@@ -24,27 +25,33 @@
             <div class="inner">
               <h3 class="masthead-brand"></h3>
               <nav class="nav nav-masthead">
-                <a class="nav-link active" href="#">Home</a>
-                <a class="nav-link" href="#">Elections</a>
-                <a class="nav-link" href="#">Representatives</a>
+                <a class="nav-link active" href="/">Start Over</a>
+
               </nav>
             </div>
           </header>
           <div class="clearfix"></div>
 
           <main class="jumbotron">
-            <h4>Ready to get involved?</h4>
+            <% if @message != '' %>
+              <div id="message" class="col-sm-12">
+                <p><%= @message %></p>
+              </div>
+            <%end%>
+            <h4>Ready to get involved? Find your representatives Here!</h4>
 
             <form id="address" method="post">
               <div id="addressInput" class="form-group">
                 <label for="address">Address</label>
                 <input class="form-control" id="addressToSearch" name="address" placeholder="Address..."/>
                 <small class="form-text text-muted">Enter an address to find your representatives.</small><br>
-                  <small class="form-text text-muted">We will not save your address, Promise!</small>
+                <small class="form-text text-muted">We will not save your address, Promise!</small>
               </div>
               <button class="btn btn-primary" type="submit">Search</button>
             </form>
-
+            <div id="searchError" class="col-sm-12">
+              <p></p>
+            </div>
             <form id="phone" action='/officials/send' method="post">
               <div class="officials"></div>
               <div id="phoneInput" class="form-group">
@@ -56,7 +63,6 @@
             </form>
 
           </main>
-
 
         </div>
 

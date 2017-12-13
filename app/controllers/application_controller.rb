@@ -11,6 +11,8 @@ class ApplicationController < Sinatra::Base
 
   get '/' do
     @officials = Official.all
+    @message = session[:message] ? session[:message] : ''
+    session.delete(:message)
     erb :index
   end
 
@@ -22,25 +24,31 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/officials/send' do
-    numbers = params[:toNumber].split('-')
+    if params[:toNumber].present? && params[:officials].present?
+    to_numbers = params[:toNumber].split('-')
     officials = params[:officials][:to_send]
-
+  else
+    session[:message] = "Whoops, enter a phone number and check a box to send a text."
+    redirect to '/'
+  end
     client = Twilio::REST::Client.new(
       account_sid = ENV['TWILIO_ACCOUNT_SID'],
-      auth_token = ENV['TWILIO_AUTH_TOKEN']
+       auth_token = ENV['TWILIO_AUTH_TOKEN']
     )
-
-    numbers.each do |number|
-      officials.each do |official|
-        @official = Official.find(official)
-
-        client.messages.create(
-          to: number,
-          from: ENV['TWILIO_NUMBER_ONE'],
-          body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}"
-        )
+    to_numbers.each do |number|
+      if valid_number?(number)
+        officials.each do |official|
+          @official = Official.find(official)
+          client.messages.create(
+            to: number,
+            from: ENV['TWILIO_NUMBER_ONE'],
+            body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}"
+          )
+        end
+        session[:message] = 'Text message sent!'
+      else
+        session[:message] = 'Enter a valid number to recieve the text.'
       end
-      # flash[:text_sent] = 'Officials have been sent to your phone.'
     end
     redirect to '/'
   end
@@ -50,5 +58,21 @@ class ApplicationController < Sinatra::Base
     @official = []
     content_type :json
     'none'.to_json
+  end
+
+  helpers do
+    def valid_number?(number)
+      phone_client = Twilio::REST::Client.new(
+         ENV['TWILIO_ACCOUNT_SID'],
+         ENV['TWILIO_AUTH_TOKEN']
+      )
+      begin
+        number = phone_client.lookups.v1.phone_numbers(number).fetch(type: 'carrier')
+        number.carrier['type'] === 'mobile'
+      rescue Twilio::REST::RestError => error
+        @error = error
+        return false
+      end
+    end
   end
 end

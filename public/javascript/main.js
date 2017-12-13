@@ -1,26 +1,34 @@
 'use-strict';
 hidePhoneForm();
+hideErrors();
+readyAddressForm();
 
-//process address form
-let addressForm = document.getElementById('address');
-addressForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  let address = this["address"].value;
-  getOfficials(address);
-});
 
-         //////Functions///////
+//////Functions///////
+
+function readyAddressForm() { //process address form
+  let addressForm = document.getElementById('address');
+  addressForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (this["address"].value !== '') {
+      let address = this["address"].value;
+      getOfficials(address);
+    } else {
+      searchError();
+    }
+  });
+}
 
 function getOfficials(address) {
   clearAddress();
-  const API_KEY = "AIzaSyD5JWZW3JJSHUYyE8wKCLUOnesa5Udd1AI";   //for development, should be hidden otherwise
+  const API_KEY = "AIzaSyD5JWZW3JJSHUYyE8wKCLUOnesa5Udd1AI"; //for development, should be hidden otherwise
   let url = `https://www.googleapis.com/civicinfo/v2/representatives?address=${address}&key=${API_KEY}`
   clearThenRequestOfficials(url);
 }
 
-function clearThenRequestOfficials(url){
+function clearThenRequestOfficials(url) {
   $.post('/officials/delete', [], function() {
-     fetch(url)
+    fetch(url)
       .then(res => res.json())
       .then(data => {
         const officials = data.officials;
@@ -29,9 +37,10 @@ function clearThenRequestOfficials(url){
         let values = makeOfficalsJSON(officials, offices);
         makePostRequest(values);
       });
-   });
+  });
 }
-function makeOfficalsJSON(officials, offices){
+
+function makeOfficalsJSON(officials, offices) {
   let index = 0;
   let values = [];
   officials.forEach(function(data) {
@@ -39,12 +48,12 @@ function makeOfficalsJSON(officials, offices){
     if (index < offices.length - 1) {
       index = index + 1;
     }
-      values.push(JSON.parse(officialObj));
+    values.push(JSON.parse(officialObj));
   });
   return values;
 }
 
-function makePostRequest(officials){
+function makePostRequest(officials) {
   officials.forEach(function(official) {
     let officialObj = $.post('/officials', official);
     officialObj.done(function(data) {
@@ -54,7 +63,7 @@ function makePostRequest(officials){
   });
 }
 
-function makeDisplayTemplate(data){
+function makeDisplayTemplate(data) {
   var civicTemplate = document.getElementById('civic').innerHTML;
   var template = Handlebars.compile(civicTemplate);
   var html = template(data);
@@ -63,6 +72,11 @@ function makeDisplayTemplate(data){
 
 function hidePhoneForm() {
   document.getElementById('phone').style.visibility = "hidden";
+}
+
+function hideErrors(){
+  document.getElementById('searchError').style.visibility = "hidden";
+
 }
 
 function showPhoneForm() {
@@ -75,4 +89,19 @@ function clearAddress() {
   cleared.done(function(data) {
     document.getElementsByClassName('officials')[0].innerHTML = "";
   });
+}
+
+if ($('#message')) {
+  setTimeout(function() {
+    $('#message').fadeOut('slow');
+  }, 3000);
+
+}
+
+function searchError() {
+  $('#searchError').css('visibility', 'visible');
+  $('#searchError p').text("Please enter an address or zipcode.");
+  setTimeout(function() {
+    $('#searchError').fadeOut('slow');
+  }, 3000);
 }

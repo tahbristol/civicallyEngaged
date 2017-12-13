@@ -1,12 +1,17 @@
-html, body {
+html{
   height: 100%;
 }
+
+body {
+ font-family: 'Roboto', sans-serif;
+}
+
 header {
   float: right;
 }
 
 #site {
-  margin-left:30px;
+  margin-left: 30px;
   margin-top: 50px;
 }
 
@@ -19,6 +24,7 @@ main.jumbotron {
   text-align: center;
   margin-bottom: 0;
 }
+
 main h4 {
   margin: 10px 0;
 }
@@ -35,7 +41,24 @@ input {
   width: 300px;
 }
 
+#message {
+  width: 100%;
+  background-color: pink;
+  position: absolute;
+  z-index: 10;
+}
 
+#searchError {
+  width: 100%;
+  background-color: pink;
+  position: absolute;
+  z-index: 10;
+}
+
+
+#searchError p {
+ margin: 0;
+}
 
 img {
   width: 100px;
@@ -48,8 +71,8 @@ footer .inner {
   display: none;
 }
 
-@media only screen and (min-width:550px){
-    #addressToSearch {
-  width: 500px;
-}
+@media only screen and (min-width:550px) {
+  #addressToSearch {
+    width: 500px;
+  }
 }

@@ -25,7 +25,7 @@ class ApplicationController < Sinatra::Base
 
   post '/officials/send' do
     if params[:toNumber].present? && params[:officials].present?
-    to_numbers = params[:toNumber].split('-')
+    to_numbers = params[:toNumber].gsub("-","")
     officials = params[:officials][:to_send]
   else
     session[:message] = "Whoops, enter a phone number and check a box to send a text."

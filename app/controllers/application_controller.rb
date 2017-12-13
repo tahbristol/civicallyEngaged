@@ -17,7 +17,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/officials' do
-   @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email])
+    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email])
     @official.save
     content_type :json
     @official.to_json
@@ -31,10 +31,7 @@ class ApplicationController < Sinatra::Base
     session[:message] = "Whoops, enter a phone number and check a box to send a text."
     redirect to '/'
   end
-    client = Twilio::REST::Client.new(
-      account_sid = ENV['TWILIO_ACCOUNT_SID'],
-       auth_token = ENV['TWILIO_AUTH_TOKEN']
-    )
+    client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'],ENV['TWILIO_AUTH_TOKEN'])
     to_numbers.each do |number|
       if valid_number?(number.gsub("-",""))
         officials.each do |official|
@@ -62,10 +59,7 @@ class ApplicationController < Sinatra::Base
 
   helpers do
     def valid_number?(number)
-      phone_client = Twilio::REST::Client.new(
-         ENV['TWILIO_ACCOUNT_SID'],
-         ENV['TWILIO_AUTH_TOKEN']
-      )
+      phone_client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
       begin
         number = phone_client.lookups.v1.phone_numbers(number).fetch(type: 'carrier')
         number.carrier['type'] === 'mobile'

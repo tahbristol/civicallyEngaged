@@ -12,6 +12,7 @@ function readyAddressForm() { //process address form
     e.preventDefault();
     if (this["address"].value !== '') {
       let address = this["address"].value;
+      console.log(address);
       getOfficials(address);
     } else {
       searchError();
@@ -34,6 +35,7 @@ function clearThenRequestOfficials(url) {
         const officials = data.officials;
         const division = data.division;
         const offices = data.offices;
+        console.log(data);
         let values = makeOfficalsJSON(officials, offices);
         makePostRequest(values);
       });
@@ -48,11 +50,18 @@ function makeOfficalsJSON(officials, offices) {
       if (!officials[index]["emails"]){
         email = "Unknown";
       }else{
-         email = officials[index]["emails"];
+         email = officials[index]["emails"][0];
       }
-      let officialObj = `{"name": "${officials[index]["name"]}", "party": "${officials[index]["party"]}", "phone": "${officials[index]["phones"]}", "email": "${email}", "url": "${officials[index]["urls"]}", "position": "${office["name"]}"}`;
-      values.push(JSON.parse(officialObj));
-    }); 
+      let officialObj = {
+        name: officials[index]["name"],
+        party: officials[index]["party"],
+        phone: officials[index]["phones"][0],
+        email: email,
+        url: officials[index]["urls"],
+        position: office["name"]
+      };
+      values.push(officialObj);
+    });
   });
   return values;
 }

@@ -12,7 +12,6 @@ function readyAddressForm() { //process address form
     e.preventDefault();
     if (this["address"].value !== '') {
       let address = this["address"].value;
-      console.log(address);
       getOfficials(address);
     } else {
       searchError();
@@ -57,7 +56,7 @@ function makeOfficalsJSON(officials, offices) {
         party: officials[index]["party"],
         phone: officials[index]["phones"][0],
         email: email,
-        url: officials[index]["urls"],
+        url: officials[index]["urls"][0],
         position: office["name"]
       };
       values.push(officialObj);

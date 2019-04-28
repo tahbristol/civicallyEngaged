@@ -17,7 +17,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/officials' do
-    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], photoUrl: params[:photoUrl])
+    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email])
     @official.save
     content_type :json
     @official.to_json
@@ -31,10 +31,7 @@ class ApplicationController < Sinatra::Base
     session[:message] = "Whoops, enter a phone number and check a box to send a text."
     redirect to '/'
   end
-    client = Twilio::REST::Client.new(
-      account_sid = ENV['TWILIO_ACCOUNT_SID'],
-       auth_token = ENV['TWILIO_AUTH_TOKEN']
-    )
+    client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'],ENV['TWILIO_AUTH_TOKEN'])
     to_numbers.each do |number|
       
       if valid_number?(number)
@@ -44,7 +41,7 @@ class ApplicationController < Sinatra::Base
           client.messages.create(
             to: number,
             from: ENV['TWILIO_NUMBER_ONE'],
-            body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}"
+            body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}, #{@official.email}"
           )
         end
         session[:message] = 'Text message sent!'

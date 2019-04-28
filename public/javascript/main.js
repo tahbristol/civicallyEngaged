@@ -42,7 +42,6 @@ function clearThenRequestOfficials(url) {
 }
 
 function makeOfficalsJSON(officials, offices) {
-  let index = 0;
   let values = [];
   officials.forEach(function(data) {
     let officialObj = `{"name": "${data.name.replace(/\"/g, '')}", "party": "${data.party}", "phone": "${data.phones}", "url": "${data.urls}", "position": "${offices[index].name}", "photoUrl": "${data.photoUrl}"}`
@@ -53,7 +52,7 @@ function makeOfficalsJSON(officials, offices) {
 			values.push(JSON.parse(officialObj));
 		}
 		catch{
-			debugger
+			console.log("Error")
 		}
   });
   return values;

@@ -21,27 +21,24 @@ function readyAddressForm() { //process address form
 
 function getOfficials(address) {
   clearAddress();
-  const API_KEY = "AIzaSyAZocKCesMr8n7HXJjFHykvnCLspocr5TA"; //for development, should be hidden otherwise
-  let url = `https://www.googleapis.com/civicinfo/v2/representatives?address=${address}&key=${API_KEY}`
-  clearThenRequestOfficials(url);
+  $.post('/officials/queryAPI', {address: address}, function(res){
+		clearThenRequestOfficials(JSON.parse(res));
+	})
 }
 
-function clearThenRequestOfficials(url) {
+function clearThenRequestOfficials(data) {
   $.post('/officials/delete', [], function() {
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const officials = data.officials;
-        const division = data.division;
-        const offices = data.offices;
-				
-        let values = makeOfficalsJSON(officials, offices);
-        makePostRequest(values);
-      });
+    const officials = data.officials;
+    const division = data.division;
+    const offices = data.offices;
+
+    let values = makeOfficalsJSON(officials, offices);
+    makePostRequest(values);
   });
 }
 
 function makeOfficalsJSON(officials, offices) {
+	let index = 0;
   let values = [];
   officials.forEach(function(data) {
     let officialObj = `{"name": "${data.name.replace(/\"/g, '')}", "party": "${data.party}", "phone": "${data.phones}", "url": "${data.urls}", "position": "${offices[index].name}", "photoUrl": "${data.photoUrl}"}`

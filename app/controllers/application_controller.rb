@@ -1,5 +1,6 @@
 require './config/environment'
 require 'sinatra/flash'
+require 'net/http'
 class ApplicationController < Sinatra::Base
   register Sinatra::Reloader
   configure do
@@ -16,8 +17,14 @@ class ApplicationController < Sinatra::Base
     erb :index
   end
 
+  post '/officials/queryAPI' do
+    address = params[:address]
+    uri = URI("https://www.googleapis.com/civicinfo/v2/representatives?address=#{address}&key=#{ENV['GOOGLE_API_KEY']}")
+    response = Net::HTTP.get(uri)
+  end
+  
   post '/officials' do
-    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email])
+    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email], photoUrl: params[:photoUrl])
     @official.save
     content_type :json
     @official.to_json

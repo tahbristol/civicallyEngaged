@@ -19,7 +19,7 @@ gem 'tux'
 gem 'pony'
 group :production do
   gem 'pg'
-  
+
 end
 
 group :development do

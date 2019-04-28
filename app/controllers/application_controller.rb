@@ -25,7 +25,7 @@ class ApplicationController < Sinatra::Base
 
   post '/officials/send' do
     if params[:toNumber].present? && params[:officials].present?
-    to_numbers = params[:toNumber].split('-')
+    to_numbers = params[:toNumber].split(',')
     officials = params[:officials][:to_send]
   else
     session[:message] = "Whoops, enter a phone number and check a box to send a text."
@@ -36,7 +36,9 @@ class ApplicationController < Sinatra::Base
        auth_token = ENV['TWILIO_AUTH_TOKEN']
     )
     to_numbers.each do |number|
+      
       if valid_number?(number)
+
         officials.each do |official|
           @official = Official.find(official)
           client.messages.create(
@@ -66,6 +68,7 @@ class ApplicationController < Sinatra::Base
          ENV['TWILIO_ACCOUNT_SID'],
          ENV['TWILIO_AUTH_TOKEN']
       )
+      
       begin
         number = phone_client.lookups.v1.phone_numbers(number).fetch(type: 'carrier')
         number.carrier['type'] === 'mobile'

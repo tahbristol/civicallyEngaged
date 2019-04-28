@@ -21,7 +21,7 @@ function readyAddressForm() { //process address form
 
 function getOfficials(address) {
   clearAddress();
-  const API_KEY = "AIzaSyD5JWZW3JJSHUYyE8wKCLUOnesa5Udd1AI"; //for development, should be hidden otherwise
+  const API_KEY = "AIzaSyAZocKCesMr8n7HXJjFHykvnCLspocr5TA"; //for development, should be hidden otherwise
   let url = `https://www.googleapis.com/civicinfo/v2/representatives?address=${address}&key=${API_KEY}`
   clearThenRequestOfficials(url);
 }
@@ -34,6 +34,7 @@ function clearThenRequestOfficials(url) {
         const officials = data.officials;
         const division = data.division;
         const offices = data.offices;
+				
         let values = makeOfficalsJSON(officials, offices);
         makePostRequest(values);
       });
@@ -44,11 +45,16 @@ function makeOfficalsJSON(officials, offices) {
   let index = 0;
   let values = [];
   officials.forEach(function(data) {
-    let officialObj = `{"name": "${data.name}", "party": "${data.party}", "phone": "${data.phones}", "url": "${data.urls}", "position": "${offices[index].name}"}`
+    let officialObj = `{"name": "${data.name.replace(/\"/g, '')}", "party": "${data.party}", "phone": "${data.phones}", "url": "${data.urls}", "position": "${offices[index].name}", "photoUrl": "${data.photoUrl}"}`
     if (index < offices.length - 1) {
       index = index + 1;
     }
-    values.push(JSON.parse(officialObj));
+		try{
+			values.push(JSON.parse(officialObj));
+		}
+		catch{
+			debugger
+		}
   });
   return values;
 }

@@ -22,46 +22,14 @@ function readyAddressForm() { //process address form
 function getOfficials(address) {
   clearAddress();
   $.post('/officials/queryAPI', {address: address}, function(res){
-		clearThenRequestOfficials(JSON.parse(res));
-	})
-}
-
-function clearThenRequestOfficials(data) {
-  $.post('/officials/delete', [], function() {
-    const officials = data.officials;
-    const division = data.division;
-    const offices = data.offices;
-
-    let values = makeOfficalsJSON(officials, offices);
-    makePostRequest(values);
-  });
-}
-
-function makeOfficalsJSON(officials, offices) {
-	let index = 0;
-  let values = [];
-  officials.forEach(function(data) {
-    let officialObj = `{"name": "${data.name.replace(/\"/g, '')}", "party": "${data.party}", "phone": "${data.phones}", "url": "${data.urls}", "position": "${offices[index].name}", "photoUrl": "${data.photoUrl}"}`
-    if (index < offices.length - 1) {
-      index = index + 1;
-    }
-		try{
-			values.push(JSON.parse(officialObj));
-		}
-		catch{
-			console.log("Error")
-		}
-  });
-  return values;
+    makePostRequest(res)
+  })
 }
 
 function makePostRequest(officials) {
   officials.forEach(function(official) {
-    let officialObj = $.post('/officials', official);
-    officialObj.done(function(data) {
-      makeDisplayTemplate(data);
+      makeDisplayTemplate(official);
       showPhoneForm();
-    });
   });
 }
 

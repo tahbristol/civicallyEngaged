@@ -17,6 +17,8 @@ gem 'thin'
 gem 'shotgun'
 gem 'tux'
 gem 'pony'
+gem 'dotenv'
+
 group :production do
   gem 'pg'
 

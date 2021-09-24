@@ -20,27 +20,24 @@ class ApplicationController < Sinatra::Base
   post '/officials/queryAPI' do
     address = params[:address]
     uri = URI("https://www.googleapis.com/civicinfo/v2/representatives?address=#{address}&key=#{ENV['GOOGLE_API_KEY']}")
-    response = Net::HTTP.get(uri)
-  end
-  
-  post '/officials' do
-    @official = Official.create(name: params[:name], party: params[:party], phone: params[:phone], url: params[:url], position: params[:position], email: params[:email], photoUrl: params[:photoUrl])
-    @official.save
+    data = Net::HTTP.get(uri)
+    Official.save_officials(data)
+
     content_type :json
-    @official.to_json
+    Official.all.to_json
   end
 
   post '/officials/send' do
     if params[:toNumber].present? && params[:officials].present?
     to_numbers = params[:toNumber].split(',')
     officials = params[:officials][:to_send]
-  else
-    session[:message] = "Whoops, enter a phone number and check a box to send a text."
-    redirect to '/'
-  end
-    client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'],ENV['TWILIO_AUTH_TOKEN'])
+    else
+      session[:message] = "Whoops, enter a phone number and check a box to send a text."
+      redirect to '/'
+    end
+
+    client = Twilio::REST::Client.new(ENV['TWILIO_API_KEY'],ENV['TWILIO_API_SECRET'],ENV['TWILIO_ACCOUNT_SID'])
     to_numbers.each do |number|
-      
       if valid_number?(number)
 
         officials.each do |official|
@@ -69,8 +66,9 @@ class ApplicationController < Sinatra::Base
   helpers do
     def valid_number?(number)
       phone_client = Twilio::REST::Client.new(
-         ENV['TWILIO_ACCOUNT_SID'],
-         ENV['TWILIO_AUTH_TOKEN']
+         ENV['TWILIO_API_KEY'],
+         ENV['TWILIO_API_SECRET'],
+         ENV['TWILIO_ACCOUNT_SID']
       )
       
       begin

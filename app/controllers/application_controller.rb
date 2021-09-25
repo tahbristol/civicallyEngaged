@@ -11,17 +11,13 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-    @officials = Official.all
     @message = session[:message] ? session[:message] : ''
     session.delete(:message)
     erb :index
   end
 
   post '/officials/queryAPI' do
-    address = params[:address]
-    uri = URI("https://www.googleapis.com/civicinfo/v2/representatives?address=#{address}&key=#{ENV['GOOGLE_API_KEY']}")
-    data = Net::HTTP.get(uri)
-    json_data = Official.save_officials(data)
+    json_data = Official.fetch_all_for_address(params[:address])
     content_type :json
     JSON.generate(json_data)
   end
@@ -29,8 +25,8 @@ class ApplicationController < Sinatra::Base
   post '/officials/send' do
     result = ''
     if params[:toNumber].present? && params[:officials].present?
-    to_numbers = params[:toNumber].split(',')
-    officials = JSON.parse(params[:officials])
+      to_numbers = params[:toNumber].split(',')
+      officials = JSON.parse(params[:officials])
     else
       session[:message] = "Whoops, enter a phone number and check a box to send a text."
       redirect to '/'

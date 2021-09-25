@@ -1,6 +1,8 @@
 class Official < ActiveRecord::Base
 
-  def self.save_officials(data)
+  OFFICIALS_URL = "https://www.googleapis.com/civicinfo/v2/representatives?key=#{ENV['GOOGLE_API_KEY']}"
+
+  def self.process_officials(data)
     json = JSON.parse(data).with_indifferent_access
     officials = json[:officials]
     division = json[:division]
@@ -23,5 +25,11 @@ class Official < ActiveRecord::Base
       }
     end
     officials_json
+  end
+
+  def self.fetch_all_for_address(address)
+    full_url = URI(self::OFFICIALS_URL + "&address=#{address}")
+    data = Net::HTTP.get(full_url)
+    self.process_officials(data)
   end
 end

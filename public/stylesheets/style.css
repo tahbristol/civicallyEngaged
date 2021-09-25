@@ -78,7 +78,9 @@ img {
   margin-bottom: 8px;
 }
 
-#phoneForm, #addressForm {}
+#phoneForm, #addressForm {
+  display: none;
+}
 
 footer .inner {
   display: none;

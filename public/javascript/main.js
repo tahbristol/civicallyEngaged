@@ -3,8 +3,10 @@ hidePhoneForm();
 hideErrors();
 readyAddressForm();
 
-
 //////Functions///////
+window.CurrentOfficials = {
+  records: []
+}
 
 function readyAddressForm() { //process address form
   let addressForm = document.getElementById('address');
@@ -19,9 +21,32 @@ function readyAddressForm() { //process address form
   });
 }
 
+function readySendText() {
+  $('#phone').on('click', function(event){
+    event.preventDefault();
+    let number = $('#toPhoneNumber').val();
+    let officialsToSend = $('.sendOfficials');
+    let officials = [];
+
+    $.each(officialsToSend, function(idx, official) {
+      let sendIt = $(official).prop('checked');
+      if(sendIt) {
+        officials.push(CurrentOfficials.records[idx]);
+      }
+    });
+    $.post('/officials/send', { officials: JSON.stringify(officials), toNumber: number})
+    .then(res => res.to_json())
+    .then(data => {
+      debugger   FIX FLASH MESSAGE
+      $('#message').text(data.message);
+    })
+  })
+}
+
 function getOfficials(address) {
   clearAddress();
   $.post('/officials/queryAPI', {address: address}, function(res){
+    window.CurrentOfficials.records = res;
     makePostRequest(res)
   })
 }
@@ -29,8 +54,8 @@ function getOfficials(address) {
 function makePostRequest(officials) {
   officials.forEach(function(official) {
       makeDisplayTemplate(official);
-      showPhoneForm();
-  });
+    });
+    showPhoneForm();
 }
 
 function makeDisplayTemplate(data) {
@@ -41,7 +66,7 @@ function makeDisplayTemplate(data) {
 }
 
 function hidePhoneForm() {
-  document.getElementById('phone').style.visibility = "hidden";
+  document.getElementById('phoneForm').style.display = "none";
 }
 
 function hideErrors(){
@@ -50,7 +75,8 @@ function hideErrors(){
 }
 
 function showPhoneForm() {
-  document.getElementById('phone').style.visibility = "visible";
+  document.getElementById('phoneForm').style.display = "block";
+  readySendText();
 }
 
 function clearAddress() {

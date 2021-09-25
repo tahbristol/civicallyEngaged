@@ -21,16 +21,15 @@ class ApplicationController < Sinatra::Base
     address = params[:address]
     uri = URI("https://www.googleapis.com/civicinfo/v2/representatives?address=#{address}&key=#{ENV['GOOGLE_API_KEY']}")
     data = Net::HTTP.get(uri)
-    Official.save_officials(data)
-
+    json_data = Official.save_officials(data)
     content_type :json
-    Official.all.to_json
+    JSON.generate(json_data)
   end
 
   post '/officials/send' do
     if params[:toNumber].present? && params[:officials].present?
     to_numbers = params[:toNumber].split(',')
-    officials = params[:officials][:to_send]
+    officials = JSON.parse(params[:officials])
     else
       session[:message] = "Whoops, enter a phone number and check a box to send a text."
       redirect to '/'
@@ -41,11 +40,10 @@ class ApplicationController < Sinatra::Base
       if valid_number?(number)
 
         officials.each do |official|
-          @official = Official.find(official)
           client.messages.create(
             to: number,
             from: ENV['TWILIO_NUMBER_ONE'],
-            body: "#{@official.name}, #{@official.party}, #{@official.phone}, #{@official.url}, #{@official.email}"
+            body: "#{official['name']}, #{official['party']}, #{official['phone']}, #{official['url']}, #{official['email']}"
           )
         end
         session[:message] = 'Text message sent!'
@@ -53,14 +51,8 @@ class ApplicationController < Sinatra::Base
         session[:message] = 'Enter a valid number to recieve the text.'
       end
     end
-    redirect to '/'
-  end
-
-  post '/officials/delete' do
-    Official.destroy_all
-    @official = []
     content_type :json
-    'none'.to_json
+    { message: session[:message]}
   end
 
   helpers do

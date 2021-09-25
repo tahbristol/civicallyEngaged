@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/bmabey/database_cleaner.git
-  revision: 068656a246fcb56ab1385e7370b2740f5ebef5db
+  revision: 9046980bd612e0d0a4e24e6a45a0fee20d5e5251
   specs:
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
@@ -67,14 +67,12 @@ GEM
       mini_mime (>= 0.1.1)
     method_source (1.0.0)
     mini_mime (1.1.1)
-    mini_portile2 (2.6.1)
     minitest (5.14.4)
     multi_json (1.15.0)
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    nokogiri (1.12.4)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.12.4-x86_64-linux)
       racc (~> 1.4)
     pg (1.2.3)
     pony (1.13.1)
@@ -156,7 +154,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   activerecord
@@ -184,4 +182,4 @@ DEPENDENCIES
   twilio-ruby
 
 BUNDLED WITH
-   1.17.2
+   2.2.28

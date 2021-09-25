@@ -36,16 +36,13 @@ class ApplicationController < Sinatra::Base
       redirect to '/'
     end
 
-    client = Twilio::REST::Client.new(ENV['TWILIO_API_KEY'],ENV['TWILIO_API_SECRET'],ENV['TWILIO_ACCOUNT_SID'])
-    to_numbers.each do |number|
-      if valid_number?(number)
+    twilio_client = API::TwilioRequest.new
 
+    to_numbers.each do |number|
+      if twilio_client.valid_number?(number, 'carrier', 'mobile')
         officials.each do |official|
-          client.messages.create(
-            to: number,
-            from: ENV['TWILIO_NUMBER_ONE'],
-            body: "#{official['name']}, #{official['party']}, #{official['phone']}, #{official['url']}, #{official['email']}"
-          )
+          message = "#{official['name']}, #{official['party']}, #{official['phone']}, #{official['url']}, #{official['email']}"
+          twilio_client.send_text(number, message)
         end
         result = 'Text message sent!'
       else
@@ -58,20 +55,5 @@ class ApplicationController < Sinatra::Base
   end
 
   helpers do
-    def valid_number?(number)
-      phone_client = Twilio::REST::Client.new(
-         ENV['TWILIO_API_KEY'],
-         ENV['TWILIO_API_SECRET'],
-         ENV['TWILIO_ACCOUNT_SID']
-      )
-      
-      begin
-        number = phone_client.lookups.v1.phone_numbers(number).fetch(type: 'carrier')
-        number.carrier['type'] === 'mobile'
-      rescue Twilio::REST::RestError => error
-        @error = error
-        return false
-      end
-    end
   end
 end

@@ -35,10 +35,9 @@ function readySendText() {
       }
     });
     $.post('/officials/send', { officials: JSON.stringify(officials), toNumber: number})
-    .then(res => res.to_json())
-    .then(data => {
-      debugger   FIX FLASH MESSAGE
-      $('#message').text(data.message);
+    .then(res => {
+      alert(res.message);
+      $('#message').text(res.message);
     })
   })
 }
@@ -55,13 +54,13 @@ function makePostRequest(officials) {
   officials.forEach(function(official) {
       makeDisplayTemplate(official);
     });
-    showPhoneForm();
+  showPhoneForm();
 }
 
 function makeDisplayTemplate(data) {
-  var civicTemplate = document.getElementById('civic').innerHTML;
-  var template = Handlebars.compile(civicTemplate);
-  var html = template(data);
+  let civicTemplate = document.getElementById('civic').innerHTML;
+  let template = Handlebars.compile(civicTemplate);
+  let html = template(data);
   document.getElementsByClassName('officials')[0].innerHTML += html;
 }
 
@@ -81,10 +80,6 @@ function showPhoneForm() {
 
 function clearAddress() {
   hidePhoneForm();
-  let cleared = $.post('/officials/delete');
-  cleared.done(function(data) {
-    document.getElementsByClassName('officials')[0].innerHTML = "";
-  });
 }
 
 if ($('#message')) {

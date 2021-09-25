@@ -27,6 +27,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/officials/send' do
+    result = ''
     if params[:toNumber].present? && params[:officials].present?
     to_numbers = params[:toNumber].split(',')
     officials = JSON.parse(params[:officials])
@@ -46,13 +47,14 @@ class ApplicationController < Sinatra::Base
             body: "#{official['name']}, #{official['party']}, #{official['phone']}, #{official['url']}, #{official['email']}"
           )
         end
-        session[:message] = 'Text message sent!'
+        result = 'Text message sent!'
       else
-        session[:message] = 'Enter a valid number to recieve the text.'
+        result = 'Enter a valid number to recieve the text.'
       end
     end
+
     content_type :json
-    { message: session[:message]}
+    JSON.generate({ message: result})
   end
 
   helpers do
